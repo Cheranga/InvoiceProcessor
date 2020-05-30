@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +22,7 @@ namespace CCHat.InvoiceProcessor.Functions
             HttpRequest request,
             string invoiceId)
         {
+            _logger.LogInformation($"{nameof(GetInvoiceFunction)} started.");
             await Task.Delay(TimeSpan.FromSeconds(1));
             return new OkObjectResult(invoiceId);
         }
