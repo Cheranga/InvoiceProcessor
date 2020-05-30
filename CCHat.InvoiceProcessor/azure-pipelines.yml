@@ -7,12 +7,6 @@ trigger:
 - master
 
 variables:
-  # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: 'InvoiceProcessorServicePrincipal'
-
-  # Function app name
-  functionAppName: 'invoiceprocessor-func'
-
   # Agent VM image name
   vmImageName: 'vs2017-win2016'
 
