@@ -61,6 +61,20 @@ stages:
         deploy:
 
           steps:
+          - task: AzureResourceManagerTemplateDeployment@3
+            displayName: 'Validate ARM'
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: '$(azureSubscription)'
+              subscriptionId: '$(subscriptionId)'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: 'cchatdemorg'
+              location: 'Australia Southeast'
+              templateLocation: 'Linked artifact'
+              csmFile: 'Deploy/template.json'
+              csmParametersFile: 'Deploy/template.parameters.json'
+              deploymentMode: 'Validation'
+
           - task: AzureFunctionApp@1
             displayName: 'Azure functions app deploy'
             inputs:

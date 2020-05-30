@@ -10,11 +10,11 @@
     },
     "rgLocation": {
       "type": "string",
-      "defaultValue":"Australia Southeast",
+      "defaultValue": "Australia Southeast",
       "metadata": {
         "description": "The location"
       }
-    },    
+    },
     "appName": {
       "type": "string",
       "metadata": {
@@ -32,14 +32,7 @@
       "metadata": {
         "description": "Storage Account type"
       }
-    },    
-    "aspName": {
-      "type": "string",
-      "defaultValue":"",
-      "metadata": {
-        "description": "The ASP name"
-      }
-    },    
+    },
     "timeZone": {
       "type": "string",
       "defaultValue": "AUS Eastern Standard Time",
@@ -51,9 +44,10 @@
   "variables": {
     "functionAppName": "[concat(parameters('appName'),'-func-agl-',parameters('appEnvironment'))]",
     "applicationInsightsName": "[concat(parameters('appName'),'ins')]",
-    "serverFarmId": "[resourceId(subscription().subscriptionId,resourceGroup().name,'Microsoft.Web/serverFarms',parameters('aspName'))]",    
+    "aspName":"[concat(replace(parameters('appName'),'-',''),'-','asp')]",
+    "serverFarmId": "[resourceId(subscription().subscriptionId,resourceGroup().name,'Microsoft.Web/serverFarms',variables('aspName'))]",
     "storageAccountName": "[toLower(replace(concat(parameters('appName'),parameters('appEnvironment'),'sg'),'-',''))]",
-    "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",        
+    "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
     "functionWorkerRuntime": "dotnet"
   },
   "resources": [
@@ -68,6 +62,23 @@
       }
     },
     {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2016-09-01",
+      "name": "[variables('aspName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "name": "[variables('aspName')]",
+        "computeMode": "Dynamic"
+      },
+      "sku": {
+        "name": "Y1",
+        "tier": "Dynamic",
+        "size": "Y1",
+        "family": "Y",
+        "capacity": 0
+      }
+    },
+    {
       "apiVersion": "2015-08-01",
       "type": "Microsoft.Web/sites",
       "name": "[variables('functionAppName')]",
@@ -77,6 +88,7 @@
       "location": "[resourceGroup().location]",
       "kind": "functionapp",
       "dependsOn": [
+        "[variables('serverFarmId')]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
       ],
       "resources": [
