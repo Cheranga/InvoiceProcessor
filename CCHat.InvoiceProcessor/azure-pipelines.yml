@@ -107,7 +107,7 @@ stages:
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
 
 - deployment: Deploy
-    displayName: Deploy
+    displayName: TEST
     environment: 'TEST'
     pool:
       vmImage: $(vmImageName)
