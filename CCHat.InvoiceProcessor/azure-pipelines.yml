@@ -45,21 +45,22 @@ stages:
         replaceExistingArchive: true
 
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      displayName: BuildArtifact
       artifact: drop
 
     - publish: $(workingDirectory)/Deploy
+      displayName: ARM Templates
       artifact: deploy  
 
 
-- stage: Deploy
-  displayName: Deploy stage
+- stage: DEV  
   dependsOn: Build
   condition: succeeded()
 
   jobs:
-  - deployment: Deploy
-    displayName: Deploy
-    environment: 'DEV'
+  - deployment: DEV
+    displayName: DEV
+    environment: DEV
     pool:
       vmImage: $(vmImageName)
 
@@ -91,6 +92,60 @@ stages:
               subscriptionId: '$(subscriptionId)'
               action: 'Create Or Update Resource Group'
               resourceGroupName: 'cchatdemorg'
+              location: 'Australia Southeast'
+              templateLocation: 'Linked artifact'              
+              csmFile: '$(Pipeline.Workspace)/deploy/template.json'
+              csmParametersFile: '$(Pipeline.Workspace)/deploy/template.parameters.json'
+              overrideParameters: '-appName $(functionAppName)'              
+              deploymentMode: 'Incremental'
+
+          - task: AzureFunctionApp@1
+            displayName: 'Deploy Azure Function App'
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              appType: functionApp
+              appName: '$(functionAppName)'
+              package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+
+- stage: TEST  
+  dependsOn: Build
+  condition: succeeded()
+
+  jobs:
+  - deployment: TEST
+    displayName: TEST
+    environment: TEST
+    pool:
+      vmImage: $(vmImageName)
+
+    strategy:
+      runOnce:
+        deploy:
+
+          steps:
+          - task: AzureResourceManagerTemplateDeployment@3
+            displayName: 'Validate ARM'
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: '$(azureSubscription)'
+              subscriptionId: '$(subscriptionId)'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: 'cchatdemotestrg'
+              location: 'Australia Southeast'
+              templateLocation: 'Linked artifact'              
+              csmFile: '$(Pipeline.Workspace)/deploy/template.json'
+              csmParametersFile: '$(Pipeline.Workspace)/deploy/template.parameters.json'
+              overrideParameters: '-appName $(functionAppName)'
+              deploymentMode: 'Validation'
+
+          - task: AzureResourceManagerTemplateDeployment@3
+            displayName: 'Deploy Azure Function Infrastructure'
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: '$(azureSubscription)'
+              subscriptionId: '$(subscriptionId)'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: 'cchatdemotestrg'
               location: 'Australia Southeast'
               templateLocation: 'Linked artifact'              
               csmFile: '$(Pipeline.Workspace)/deploy/template.json'
