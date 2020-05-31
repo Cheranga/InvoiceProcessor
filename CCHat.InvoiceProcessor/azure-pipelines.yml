@@ -98,7 +98,7 @@ stages:
               deploymentMode: 'Incremental'
 
           - task: AzureFunctionApp@1
-            displayName: 'Azure functions app deploy'
+            displayName: 'Deploy Azure Function App'
             inputs:
               azureSubscription: '$(azureSubscription)'
               appType: functionApp
