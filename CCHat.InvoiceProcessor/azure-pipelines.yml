@@ -74,11 +74,10 @@ stages:
               action: 'Create Or Update Resource Group'
               resourceGroupName: 'cchatdemorg'
               location: 'Australia Southeast'
-              templateLocation: 'Linked artifact'
-              #csmFile: '$(System.DefaultWorkingDirectory)/Deploy/template.json'
+              templateLocation: 'Linked artifact'              
               csmFile: '$(Pipeline.Workspace)/deploy/template.json'
               csmParametersFile: '$(Pipeline.Workspace)/deploy/template.parameters.json'
-              #csmParametersFile: '$(System.DefaultWorkingDirectory)/Deploy/template.parameters.json'
+              overrideParameters: '-appName $(functionAppName)'
               deploymentMode: 'Validation'
 
           - task: AzureResourceManagerTemplateDeployment@3
@@ -90,11 +89,10 @@ stages:
               action: 'Create Or Update Resource Group'
               resourceGroupName: 'cchatdemorg'
               location: 'Australia Southeast'
-              templateLocation: 'Linked artifact'
-              #csmFile: '$(System.DefaultWorkingDirectory)/Deploy/template.json'
+              templateLocation: 'Linked artifact'              
               csmFile: '$(Pipeline.Workspace)/deploy/template.json'
               csmParametersFile: '$(Pipeline.Workspace)/deploy/template.parameters.json'
-              #csmParametersFile: '$(System.DefaultWorkingDirectory)/Deploy/template.parameters.json'
+              overrideParameters: '-appName $(functionAppName)'              
               deploymentMode: 'Incremental'
 
           - task: AzureFunctionApp@1
@@ -102,5 +100,5 @@ stages:
             inputs:
               azureSubscription: '$(azureSubscription)'
               appType: functionApp
-              appName: 'invoice-processor-func-qtrd'
+              appName: '$(functionAppName)-func'
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'

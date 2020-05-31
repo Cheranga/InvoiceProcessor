@@ -42,7 +42,7 @@
     }
   },
   "variables": {
-    "functionAppName": "[concat(parameters('appName'),'-func-',parameters('appEnvironment'))]",
+    "functionAppName": "[concat(parameters('appName'),'-func')]",
     "applicationInsightsName": "[concat(parameters('appName'),'ins')]",
     "aspName":"[concat(replace(parameters('appName'),'-',''),'-','asp')]",
     "serverFarmId": "[resourceId(subscription().subscriptionId,resourceGroup().name,'Microsoft.Web/serverFarms',variables('aspName'))]",
