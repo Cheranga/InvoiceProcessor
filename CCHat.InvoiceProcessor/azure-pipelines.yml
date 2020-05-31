@@ -81,7 +81,7 @@ stages:
               templateLocation: 'Linked artifact'              
               csmFile: '$(Pipeline.Workspace)/deploy/template.json'
               csmParametersFile: '$(Pipeline.Workspace)/deploy/template.parameters.json'
-              overrideParameters: '-appName $(functionAppName)'
+              overrideParameters: '-appName $(functionAppName)-dev'
               deploymentMode: 'Validation'
 
           - task: AzureResourceManagerTemplateDeployment@3
@@ -96,7 +96,7 @@ stages:
               templateLocation: 'Linked artifact'              
               csmFile: '$(Pipeline.Workspace)/deploy/template.json'
               csmParametersFile: '$(Pipeline.Workspace)/deploy/template.parameters.json'
-              overrideParameters: '-appName $(functionAppName)'              
+              overrideParameters: '-appName $(functionAppName)-dev'              
               deploymentMode: 'Incremental'
 
           - task: AzureFunctionApp@1
@@ -135,7 +135,7 @@ stages:
               templateLocation: 'Linked artifact'              
               csmFile: '$(Pipeline.Workspace)/deploy/template.json'
               csmParametersFile: '$(Pipeline.Workspace)/deploy/template.parameters.json'
-              overrideParameters: '-appName $(functionAppName)'
+              overrideParameters: '-appName $(functionAppName)-test'
               deploymentMode: 'Validation'
 
           - task: AzureResourceManagerTemplateDeployment@3
@@ -150,7 +150,7 @@ stages:
               templateLocation: 'Linked artifact'              
               csmFile: '$(Pipeline.Workspace)/deploy/template.json'
               csmParametersFile: '$(Pipeline.Workspace)/deploy/template.parameters.json'
-              overrideParameters: '-appName $(functionAppName)'              
+              overrideParameters: '-appName $(functionAppName)-test'              
               deploymentMode: 'Incremental'
 
           - task: AzureFunctionApp@1
