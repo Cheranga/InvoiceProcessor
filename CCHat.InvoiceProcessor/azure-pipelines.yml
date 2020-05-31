@@ -71,8 +71,8 @@ stages:
               resourceGroupName: 'cchatdemorg'
               location: 'Australia Southeast'
               templateLocation: 'Linked artifact'
-              csmFile: 'Deploy/template.json'
-              csmParametersFile: 'Deploy/template.parameters.json'
+              csmFile: '$(System.DefaultWorkingDirectory)/Deploy/template.json'
+              csmParametersFile: '$(System.DefaultWorkingDirectory)/Deploy/template.parameters.json'
               deploymentMode: 'Validation'
 
           - task: AzureFunctionApp@1
