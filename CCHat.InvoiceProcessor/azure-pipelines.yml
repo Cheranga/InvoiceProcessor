@@ -8,7 +8,7 @@ trigger:
 
 variables:
   # Function app name
-  functionAppName: 'cchatinvoiceprocessor'
+  functionAppName: 'invprocessor'
 
   # Agent VM image name
   vmImageName: 'vs2017-win2016'
