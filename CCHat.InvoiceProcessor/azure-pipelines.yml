@@ -7,6 +7,9 @@ trigger:
 - master
 
 variables:
+  # Function app name
+  functionAppName: 'cchatinvoiceprocessor'
+
   # Agent VM image name
   vmImageName: 'vs2017-win2016'
 
@@ -100,5 +103,5 @@ stages:
             inputs:
               azureSubscription: '$(azureSubscription)'
               appType: functionApp
-              appName: '$(functionAppName)-func'
+              appName: '$(functionAppName)'
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
