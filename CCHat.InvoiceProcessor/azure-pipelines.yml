@@ -44,10 +44,8 @@ stages:
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       artifact: drop
 
-    - task: CopyFiles@2
-      inputs:
-        contents: '**\Deploy**'
-        targetFolder: '$(Build.ArtifactStagingDirectory)'
+    - publish: $(workingDirectory)/Deploy
+      artifact: deploy  
 
 
 - stage: Deploy
