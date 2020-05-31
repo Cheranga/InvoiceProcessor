@@ -46,7 +46,7 @@ stages:
 
     - task: CopyFiles@2
       inputs:
-        contents: '**\Deploy'
+        contents: '**\Deploy**'
         targetFolder: '$(Build.ArtifactStagingDirectory)/armTemplates'
 
 
