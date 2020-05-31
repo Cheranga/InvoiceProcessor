@@ -44,8 +44,11 @@ stages:
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       artifact: drop
 
-    - publish: $(System.DefaultWorkingDirectory)/Deploy
-      artifact: armTemplates
+    - task: CopyFiles@2
+      inputs:
+        contents: '**\Deploy'
+        targetFolder: '$(Build.ArtifactStagingDirectory)/armTemplates'
+
 
 - stage: Deploy
   displayName: Deploy stage
@@ -75,8 +78,8 @@ stages:
               location: 'Australia Southeast'
               templateLocation: 'Linked artifact'
               #csmFile: '$(System.DefaultWorkingDirectory)/Deploy/template.json'
-              csmFile: '$(Pipeline.Workspace)/armTemplates/template.json'
-              csmParametersFile: '$(Pipeline.Workspace)/armTemplates/template.parameters.json'
+              csmFile: '$(Build.ArtifactStagingDirectory)/armTemplates/template.json'
+              csmParametersFile: '$(Build.ArtifactStagingDirectory)/armTemplates/template.parameters.json'
               #csmParametersFile: '$(System.DefaultWorkingDirectory)/Deploy/template.parameters.json'
               deploymentMode: 'Validation'
 
