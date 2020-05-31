@@ -47,7 +47,7 @@ stages:
     - task: CopyFiles@2
       inputs:
         contents: '**\Deploy**'
-        targetFolder: '$(Build.ArtifactStagingDirectory)/armTemplates'
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
 
 
 - stage: Deploy
@@ -78,8 +78,8 @@ stages:
               location: 'Australia Southeast'
               templateLocation: 'Linked artifact'
               #csmFile: '$(System.DefaultWorkingDirectory)/Deploy/template.json'
-              csmFile: '$(Build.ArtifactStagingDirectory)/armTemplates/template.json'
-              csmParametersFile: '$(Build.ArtifactStagingDirectory)/armTemplates/template.parameters.json'
+              csmFile: '$(Build.ArtifactStagingDirectory)/template.json'
+              csmParametersFile: '$(Build.ArtifactStagingDirectory)/template.parameters.json'
               #csmParametersFile: '$(System.DefaultWorkingDirectory)/Deploy/template.parameters.json'
               deploymentMode: 'Validation'
 
