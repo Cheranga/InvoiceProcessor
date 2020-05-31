@@ -81,10 +81,26 @@ stages:
               #csmParametersFile: '$(System.DefaultWorkingDirectory)/Deploy/template.parameters.json'
               deploymentMode: 'Validation'
 
+          - task: AzureResourceManagerTemplateDeployment@3
+            displayName: 'Deploy Azure Function Infrastructure'
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: '$(azureSubscription)'
+              subscriptionId: '$(subscriptionId)'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: 'cchatdemorg'
+              location: 'Australia Southeast'
+              templateLocation: 'Linked artifact'
+              #csmFile: '$(System.DefaultWorkingDirectory)/Deploy/template.json'
+              csmFile: '$(Pipeline.Workspace)/deploy/template.json'
+              csmParametersFile: '$(Pipeline.Workspace)/deploy/template.parameters.json'
+              #csmParametersFile: '$(System.DefaultWorkingDirectory)/Deploy/template.parameters.json'
+              deploymentMode: 'Incremental'
+
           - task: AzureFunctionApp@1
             displayName: 'Azure functions app deploy'
             inputs:
               azureSubscription: '$(azureSubscription)'
               appType: functionApp
-              appName: $(functionAppName)
+              appName: 'invoice-processor-func-qtrd'
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
