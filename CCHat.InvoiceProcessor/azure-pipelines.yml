@@ -76,8 +76,8 @@ stages:
               location: 'Australia Southeast'
               templateLocation: 'Linked artifact'
               #csmFile: '$(System.DefaultWorkingDirectory)/Deploy/template.json'
-              csmFile: 'Deploy/template.json'
-              csmParametersFile: 'Deploy/template.parameters.json'
+              csmFile: '$(Pipeline.Workspace)/deploy/template.json'
+              csmParametersFile: '$(Pipeline.Workspace)/deploy/template.parameters.json'
               #csmParametersFile: '$(System.DefaultWorkingDirectory)/Deploy/template.parameters.json'
               deploymentMode: 'Validation'
 
