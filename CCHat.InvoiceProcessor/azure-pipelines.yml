@@ -44,6 +44,9 @@ stages:
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       artifact: drop
 
+    - publish: $(System.DefaultWorkingDirectory)/Deploy
+      artifact: armTemplates
+
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: Build
@@ -71,8 +74,10 @@ stages:
               resourceGroupName: 'cchatdemorg'
               location: 'Australia Southeast'
               templateLocation: 'Linked artifact'
-              csmFile: '$(System.DefaultWorkingDirectory)/Deploy/template.json'
-              csmParametersFile: '$(System.DefaultWorkingDirectory)/Deploy/template.parameters.json'
+              #csmFile: '$(System.DefaultWorkingDirectory)/Deploy/template.json'
+              csmFile:'$(Pipeline.Workspace)/armTemplates/template.json'
+              csmParametersFile:'$(Pipeline.Workspace)/armTemplates/template.parameters.json'
+              #csmParametersFile: '$(System.DefaultWorkingDirectory)/Deploy/template.parameters.json'
               deploymentMode: 'Validation'
 
           - task: AzureFunctionApp@1
