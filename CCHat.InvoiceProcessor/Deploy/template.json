@@ -2,12 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "appEnvironment": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of environment which the function app will be deployed."
-      }
-    },
     "rgLocation": {
       "type": "string",
       "defaultValue": "Australia Southeast",
@@ -42,11 +36,11 @@
     }
   },
   "variables": {
-    "functionAppName": "[concat(parameters('appName'),'-func')]",
+    "functionAppName": "[parameters('appName')]",
     "applicationInsightsName": "[concat(parameters('appName'),'ins')]",
     "aspName":"[concat(replace(parameters('appName'),'-',''),'-','asp')]",
     "serverFarmId": "[resourceId(subscription().subscriptionId,resourceGroup().name,'Microsoft.Web/serverFarms',variables('aspName'))]",
-    "storageAccountName": "[toLower(replace(concat(parameters('appName'),parameters('appEnvironment'),'sg'),'-',''))]",
+    "storageAccountName": "[toLower(replace(concat(parameters('appName'),'sg'),'-',''))]",
     "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
     "functionWorkerRuntime": "dotnet"
   },
